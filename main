@@ -334,7 +334,7 @@ Zinc,mg/d,5,8,11,8,9,10`;
                 });
             });
 
-            const intakeLayout = { ...layoutTemplate, title: `<b>${nutrientName} - Intake Reference Values</b>` };
+            const intakeLayout = { ...layoutTemplate, title: `<b>${nutrientName} - Dietary Reference Intake Values</b>` };
             Plotly.newPlot('intake-chart-container', intakeTraces, intakeLayout, {responsive: true});
 
             // Create Upper Limit Chart
