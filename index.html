@@ -212,7 +212,7 @@ Zinc,mg/d,5,8,11,8,9,10`;
                 efsaValueTypes.forEach(type => {
                     const value = parseFloat(row[type]);
                     if (!isNaN(value) && row[type] !== 'NA' && row[type] !== 'ND') {
-                        const source = (type === 'DRV' || type === 'DML') ? 'TGK' : 'EFSA';
+                        const source = (type === 'DRV' || type === 'DML') ? 'TFC' : 'EFSA';
                         allData.push({
                             Nutrient: row.Nutrient,
                             Unit: row.units,
@@ -251,7 +251,7 @@ Zinc,mg/d,5,8,11,8,9,10`;
                     const value = parseFloat(dataLine[j]);
                     if (!isNaN(value)) {
                         const info = colInfo[j - 2];
-                        const source = info.source === 'TFC' ? 'TGK' : 'FNB';
+                        const source = info.source === 'TFC' ? 'TFC' : 'FNB';
                         const refType = info.source === 'TFC' ? 'DRV' : info.category;
                         allData.push({
                             Nutrient: nutrient,
