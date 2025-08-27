@@ -492,6 +492,12 @@
             FNB: [5, 5],
             TFC: [10, 5, 2, 5]
         };
+        const genderColors = {
+            Male: 'rgba(54, 162, 235, 1)', // Blue for Male
+            Female: 'rgba(255, 99, 132, 1)', // Red for Female
+            Both: 'rgba(75, 192, 192, 1)' // Green for Both
+        };
+
 
         // --- UTILITY FUNCTIONS ---
         /**
@@ -536,62 +542,49 @@
             const nutrientData = micronutrientData.filter(d => d.nutrient === nutrientName);
             if (nutrientData.length === 0) return;
 
-            const hasGenderData = nutrientData.some(d => d.gender === 'Male' || d.gender === 'Female');
-            
-            // Find all unique units for this nutrient
             const units = [...new Set(nutrientData.map(d => d.unit))];
 
-            const gendersToRender = hasGenderData ? ['Male', 'Female'] : ['Both'];
-
-            gendersToRender.forEach(gender => {
-                const intakeData = nutrientData.filter(d => ['AI', 'AR', 'PRI', 'RI', 'Safe and adequate intake', 'DRI', 'DRV'].includes(d.type));
-                const ulData = nutrientData.filter(d => ['UL', 'DML'].includes(d.type));
-                
-                const genderTitle = gender === 'Both' ? '' : (gender === 'Male' ? ' (Erkek)' : ' (Kadın)');
-                const chartWrapperId = `chart-wrapper-${gender}`;
-                
-                const wrapper = document.createElement('div');
-                wrapper.id = chartWrapperId;
-                wrapper.className = 'bg-white p-4 sm:p-6 rounded-xl shadow-lg';
-                wrapper.innerHTML = `
-                    <h2 class="text-xl md:text-2xl font-bold text-center mb-6 text-gray-800">${nutrientName}${genderTitle}</h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <div class="chart-container">
-                            <canvas id="intake-chart-${gender}"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="ul-chart-${gender}"></canvas>
-                        </div>
+            const intakeData = nutrientData.filter(d => ['AI', 'AR', 'PRI', 'RI', 'Safe and adequate intake', 'DRI', 'DRV'].includes(d.type));
+            const ulData = nutrientData.filter(d => ['UL', 'DML'].includes(d.type));
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'bg-white p-4 sm:p-6 rounded-xl shadow-lg';
+            wrapper.innerHTML = `
+                <h2 class="text-xl md:text-2xl font-bold text-center mb-6 text-gray-800">${nutrientName}</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="chart-container">
+                        <canvas id="intake-chart"></canvas>
                     </div>
-                `;
-                document.getElementById('charts-wrapper').appendChild(wrapper);
+                    <div class="chart-container">
+                        <canvas id="ul-chart"></canvas>
+                    </div>
+                </div>
+            `;
+            document.getElementById('charts-wrapper').appendChild(wrapper);
 
-                createChart(
-                    `intake-chart-${gender}`,
-                    `Önerilen Alım Değerleri`,
-                    intakeData,
-                    gender,
-                    `Değer (${units.join(', ')})`
-                );
-                createChart(
-                    `ul-chart-${gender}`,
-                    `Üst Limit Değerleri`,
-                    ulData,
-                    gender,
-                    `Değer (${units.join(', ')})`
-                );
-            });
+            createChart(
+                `intake-chart`,
+                `Önerilen Alım Değerleri`,
+                intakeData,
+                `Değer (${units.join(', ')})`
+            );
+            createChart(
+                `ul-chart`,
+                `Üst Limit Değerleri`,
+                ulData,
+                `Değer (${units.join(', ')})`
+            );
         }
+
 
         /**
          * Creates a single Chart.js instance.
          * @param {string} canvasId - The ID of the canvas element.
          * @param {string} title - The title of the chart.
          * @param {Array<Object>} data - The data for this chart.
-         * @param {string} gender - The gender to filter data for ('Male', 'Female', 'Both').
          * @param {string} yAxisLabel - The label for the Y-axis.
          */
-        function createChart(canvasId, title, data, gender, yAxisLabel) {
+        function createChart(canvasId, title, data, yAxisLabel) {
             const ctx = document.getElementById(canvasId);
             if (!ctx) return;
 
@@ -603,37 +596,46 @@
                 const types = [...new Set(sourceData.map(d => d.type))];
 
                 types.forEach(type => {
-                    let genderFilteredData = sourceData.filter(d => d.type === type && (d.gender === gender || d.gender === 'Both'));
-                    
-                    if (genderFilteredData.length > 0) {
-                        // Handle unit conversions for consistent display, e.g., g to mg
-                        const displayData = genderFilteredData.map(item => {
-                            let value = item.value;
-                            if (item.unit === 'g/day' && yAxisLabel.includes('mg/day')) {
-                                value *= 1000;
-                            }
-                            if (item.unit === 'g/day' && yAxisLabel.includes('μg/day')) {
-                                value *= 1000000;
-                            }
-                             if (item.unit === 'mg/day' && yAxisLabel.includes('μg/day')) {
-                                value *= 1000;
-                            }
-                            return { ...item, value };
-                        });
+                    const typeData = sourceData.filter(d => d.type === type);
+                    const genders = [...new Set(typeData.map(d => d.gender))];
 
-                        datasets.push({
-                            label: `${source} - ${type}`,
-                            data: createSteppedData(displayData),
-                            borderColor: sourceColors[source],
-                            backgroundColor: sourceColors[source].replace('1)', '0.2)'),
-                            borderWidth: 2.5,
-                            pointRadius: 0,
-                            tension: 0,
-                            stepped: 'before',
-                            borderDash: sourceBorderDash[source],
-                            spanGaps: true, 
-                        });
-                    }
+                    genders.forEach(gender => {
+                        const genderFilteredData = typeData.filter(d => d.gender === gender);
+                        
+                        if (genderFilteredData.length > 0) {
+                            const displayData = genderFilteredData.map(item => {
+                                let value = item.value;
+                                if (item.unit === 'g/day' && yAxisLabel.includes('mg/day')) value *= 1000;
+                                if (item.unit === 'g/day' && yAxisLabel.includes('μg/day')) value *= 1000000;
+                                if (item.unit === 'mg/day' && yAxisLabel.includes('μg/day')) value *= 1000;
+                                return { ...item, value };
+                            });
+
+                            let label = `${source} - ${type}`;
+                            if (gender !== 'Both') {
+                                label += ` (${gender === 'Male' ? 'Erkek' : 'Kadın'})`;
+                            }
+                            
+                            // Use different colors for male/female if they exist for the same source/type
+                            let borderColor = sourceColors[source];
+                            if (genders.includes('Male') && genders.includes('Female')) {
+                                borderColor = gender === 'Male' ? 'rgba(54, 162, 235, 1)' : 'rgba(255, 99, 132, 1)';
+                            }
+
+                            datasets.push({
+                                label: label,
+                                data: createSteppedData(displayData),
+                                borderColor: borderColor,
+                                backgroundColor: borderColor.replace('1)', '0.2)'),
+                                borderWidth: 2.5,
+                                pointRadius: 0,
+                                tension: 0,
+                                stepped: 'before',
+                                borderDash: sourceBorderDash[source],
+                                spanGaps: true, 
+                            });
+                        }
+                    });
                 });
             });
 
