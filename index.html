@@ -212,7 +212,7 @@ Zinc,mg/d,5,8,11,8,9,10`;
                 efsaValueTypes.forEach(type => {
                     const value = parseFloat(row[type]);
                     if (!isNaN(value) && row[type] !== 'NA' && row[type] !== 'ND') {
-                        const source = (type === 'DRV' || type === 'DML') ? 'TFC' : 'EFSA';
+                        const source = (type === 'DRV' || type === 'DML') ? 'TGK' : 'EFSA';
                         allData.push({
                             Nutrient: row.Nutrient,
                             Unit: row.units,
@@ -251,7 +251,7 @@ Zinc,mg/d,5,8,11,8,9,10`;
                     const value = parseFloat(dataLine[j]);
                     if (!isNaN(value)) {
                         const info = colInfo[j - 2];
-                        const source = info.source === 'TFC' ? 'TFC' : 'FNB';
+                        const source = info.source === 'TFC' ? 'TGK' : 'FNB';
                         const refType = info.source === 'TFC' ? 'DRV' : info.category;
                         allData.push({
                             Nutrient: nutrient,
@@ -272,8 +272,8 @@ Zinc,mg/d,5,8,11,8,9,10`;
         // --- PLOTTING FUNCTIONS ---
         const colorMap = {
             'EFSA_AI': '#1f77b4', 'EFSA_AR': '#ff7f0e', 'EFSA_PRI': '#2ca02c',
-            'FNB_DRI': '#d62728', 'TFC_DRV': '#9467bd',
-            'EFSA_UL': '#8c564b', 'TFC_DML': '#e377c2'
+            'FNB_DRI': '#d62728', 'TGK_DRV': '#9467bd',
+            'EFSA_UL': '#8c564b', 'TGK_DML': '#e377c2'
         };
 
         /**
@@ -300,11 +300,11 @@ Zinc,mg/d,5,8,11,8,9,10`;
             nutrientData.sort(ageOrder);
 
             // Data for Intake Chart
-            const intakeTypes = ['EFSA_AI', 'EFSA_AR', 'EFSA_PRI', 'FNB_DRI', 'TFC_DRV'];
+            const intakeTypes = ['EFSA_AI', 'EFSA_AR', 'EFSA_PRI', 'FNB_DRI', 'TGK_DRV'];
             const intakeData = nutrientData.filter(d => intakeTypes.includes(d.ReferenceType));
 
             // Data for Upper Limit Chart
-            const ulTypes = ['EFSA_UL', 'TFC_DML'];
+            const ulTypes = ['EFSA_UL', 'TGK_DML'];
             const ulData = nutrientData.filter(d => ulTypes.includes(d.ReferenceType));
 
             const layoutTemplate = {
