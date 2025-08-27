@@ -18,7 +18,7 @@
     <div class="container mx-auto p-4 sm:p-6 md:p-8">
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Micronutrient Dietary Reference Values</h1>
-            <p class="mt-2 text-md text-gray-600">Comparison of Food and Nutrition Board (FNB), European Food Safety Authority (EFSA), and Turkish Food Codex (TFC) data.</p>
+            <p class="mt-2 text-md text-gray-600">Comparison of FNB, EFSA, and Turkish Food Codex (TFC) data.</p>
         </header>
 
         <main>
@@ -205,14 +205,14 @@ Zinc,mg/d,5,8,11,8,9,10`;
         function processData() {
             const allData = [];
 
-            // 1. Process EFSA & TGK data
+            // 1. Process EFSA & TFC data
             const efsaRaw = parseCSV(efsaTgkDataCSV);
             const efsaValueTypes = ['AI', 'AR', 'PRI', 'UL', 'DRV', 'DML'];
             efsaRaw.forEach(row => {
                 efsaValueTypes.forEach(type => {
                     const value = parseFloat(row[type]);
                     if (!isNaN(value) && row[type] !== 'NA' && row[type] !== 'ND') {
-                        const source = (type === 'DRV' || type === 'DML') ? 'TGK' : 'EFSA';
+                        const source = (type === 'DRV' || type === 'DML') ? 'TFC' : 'EFSA';
                         allData.push({
                             Nutrient: row.Nutrient,
                             Unit: row.units,
@@ -226,7 +226,7 @@ Zinc,mg/d,5,8,11,8,9,10`;
                 });
             });
 
-            // 2. Process FNB & TGK data (more complex parsing)
+            // 2. Process FNB & TFC data (more complex parsing)
             const fnbLines = fnbTgkDataCSV.split('\n');
             const sourceLine = fnbLines[0].split(',');
             const categoryLine = fnbLines[1].split(',');
@@ -251,7 +251,7 @@ Zinc,mg/d,5,8,11,8,9,10`;
                     const value = parseFloat(dataLine[j]);
                     if (!isNaN(value)) {
                         const info = colInfo[j - 2];
-                        const source = info.source === 'TFC' ? 'TGK' : 'FNB';
+                        const source = info.source === 'TFC' ? 'TFC' : 'FNB';
                         const refType = info.source === 'TFC' ? 'DRV' : info.category;
                         allData.push({
                             Nutrient: nutrient,
@@ -272,8 +272,8 @@ Zinc,mg/d,5,8,11,8,9,10`;
         // --- PLOTTING FUNCTIONS ---
         const colorMap = {
             'EFSA_AI': '#1f77b4', 'EFSA_AR': '#ff7f0e', 'EFSA_PRI': '#2ca02c',
-            'FNB_DRI': '#d62728', 'TGK_DRV': '#9467bd',
-            'EFSA_UL': '#8c564b', 'TGK_DML': '#e377c2'
+            'FNB_DRI': '#d62728', 'TFC_DRV': '#9467bd',
+            'EFSA_UL': '#8c564b', 'TFC_DML': '#e377c2'
         };
 
         /**
@@ -300,11 +300,11 @@ Zinc,mg/d,5,8,11,8,9,10`;
             nutrientData.sort(ageOrder);
 
             // Data for Intake Chart
-            const intakeTypes = ['EFSA_AI', 'EFSA_AR', 'EFSA_PRI', 'FNB_DRI', 'TGK_DRV'];
+            const intakeTypes = ['EFSA_AI', 'EFSA_AR', 'EFSA_PRI', 'FNB_DRI', 'TFC_DRV'];
             const intakeData = nutrientData.filter(d => intakeTypes.includes(d.ReferenceType));
 
             // Data for Upper Limit Chart
-            const ulTypes = ['EFSA_UL', 'TGK_DML'];
+            const ulTypes = ['EFSA_UL', 'TFC_DML'];
             const ulData = nutrientData.filter(d => ulTypes.includes(d.ReferenceType));
 
             const layoutTemplate = {
@@ -334,7 +334,7 @@ Zinc,mg/d,5,8,11,8,9,10`;
                 });
             });
 
-            const intakeLayout = { ...layoutTemplate, title: `<b>${nutrientName} - Dietary Reference Intake Values</b>` };
+            const intakeLayout = { ...layoutTemplate, title: `<b>${nutrientName} - Intake Reference Values</b>` };
             Plotly.newPlot('intake-chart-container', intakeTraces, intakeLayout, {responsive: true});
 
             // Create Upper Limit Chart
