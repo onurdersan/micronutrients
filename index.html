@@ -171,6 +171,7 @@
                 disclaimerIpTitle: "4. Fikri Mülkiyet Uyarısı",
                 disclaimerIpContent: "Bu Sitenin tasarımı, metinleri, grafikleri, kodları ve diğer tüm içeriği telif hakkı ile korunmaktadır. Site sahibinin yazılı izni olmaksızın hiçbir materyal kopyalanamaz, çoğaltılamaz, dağıtılamaz veya başka bir şekilde kullanılamaz.",
                 disclaimerRightsReserved: "Tüm Hakları Saklıdır.",
+                infoButton: "Bilgi",
                 infoPanel: {
                     title: "Beslenme Referans Alımları Sözlüğü",
                     earTitle: "Tahmini Ortalama Gereksinim (EAR veya AR)",
@@ -225,6 +226,7 @@
                 disclaimerIpTitle: "4. Intellectual Property Notice",
                 disclaimerIpContent: "The design, text, graphics, code, and all other content of this Site are protected by copyright. No material may be copied, reproduced, distributed, or otherwise used without the express written permission of the Site owner.",
                 disclaimerRightsReserved: "All Rights Reserved.",
+                infoButton: "Info",
                 infoPanel: {
                     title: "Dictionary of Dietary Reference Intakes",
                     earTitle: "Estimated Average Requirement (EAR or AR)",
@@ -296,6 +298,8 @@
             document.getElementById('disclaimer-ip-title').textContent = t.disclaimerIpTitle;
             document.getElementById('disclaimer-ip-content').textContent = t.disclaimerIpContent;
             document.getElementById('disclaimer-rights-reserved').textContent = t.disclaimerRightsReserved;
+
+            document.getElementById('open-info-panel').textContent = t.infoButton;
 
             const selectElement = document.getElementById('nutrient-select');
             const placeholder = selectElement.querySelector('option[value=""]');
