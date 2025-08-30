@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Micronutrient Reference Values for Children</title>
+    <title>Micronutrient DRVs for Children</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,7 @@
         /* Custom smaller font for the footer */
         .footer-text-custom {
             font-size: 0.5rem; /* text-xs'den (0.75rem) daha küçük */
-            line-height: 0.6rem; /* Okunabilirliği artırmak için satır yüksekliği */
+            line-height: 0.6rem; /* satır yüksekliği */
         }
     </style>
 </head>
@@ -39,7 +39,7 @@
         <button onclick="switchLanguage('en')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-r-md">EN</button>
     </div>
     <header class="text-center mb-10 pt-16 sm:pt-0">
-            <h1 id="main-title" class="text-3xl md:text-4xl font-bold text-gray-900">Mikrobesin Referans Değerleri</h1>
+            <h1 id="main-title" class="text-3xl md:text-4xl font-bold text-gray-900">Mikrobesin Beslenme Referans Değerleri</h1>
             <p id="subtitle" class="mt-2 text-md text-gray-600">EFSA, FNB ve TFC verilerinin 0-18 yaş aralığı için karşılaştırmalı analizi</p>
         </header>
 
@@ -92,7 +92,7 @@
         // --- TRANSLATION DATA ---
         const translations = {
             tr: {
-                title: "Mikrobesin Referans Değerleri",
+                title: "Mikrobesin Beslenme Referans Değerleri",
                 subtitle: "EFSA, FNB ve TFC verilerinin 0-18 yaş aralığı için karşılaştırmalı analizi",
                 nutrientSelectLabel: "Analiz Edilecek Mikrobesini Seçin:",
                 selectPlaceholder: "Bir mikrobesin seçin...",
@@ -124,7 +124,7 @@
                 disclaimerRightsReserved: "Tüm Hakları Saklıdır."
             },
             en: {
-                title: "Micronutrient Reference Values",
+                title: "Micronutrient Dietary Reference Values",
                 subtitle: "Comparative analysis of EFSA, FNB, and TFC data for the 0-18 age range",
                 nutrientSelectLabel: "Select Micronutrient to Analyze:",
                 selectPlaceholder: "Select a micronutrient...",
