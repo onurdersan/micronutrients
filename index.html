@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-TFC">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mikrobesin Referans Değerleri Karşılaştırması</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -102,11 +102,6 @@
             FNB: [5, 5],
             TFC: [10, 5, 2, 5]
         };
-        const genderColors = {
-            Male: 'rgba(54, 162, 235, 1)', // Blue for Male
-            Female: 'rgba(255, 99, 132, 1)', // Red for Female
-            Both: 'rgba(75, 192, 192, 1)' // Green for Both
-        };
 
         // --- LANGUAGE SWITCHING ---
         function switchLanguage(lang) {
@@ -121,7 +116,9 @@
             
             // Re-render the charts with the new language
             const selectedNutrient = document.getElementById('nutrient-select').value;
-            renderCharts(selectedNutrient, lang);
+            if (selectedNutrient) {
+                renderCharts(selectedNutrient, lang);
+            }
         }
 
         // --- UTILITY FUNCTIONS ---
@@ -132,6 +129,7 @@
                 points.push({ x: item.age_end, y: item.value });
                 const nextItemIndex = data.indexOf(item) + 1;
                 if (nextItemIndex < data.length) {
+                    // Create a gap if there is a discontinuity in age ranges
                     if (data[nextItemIndex].age_start > item.age_end) {
                         points.push({ x: item.age_end, y: null });
                     }
@@ -152,7 +150,7 @@
             const nutrientData = micronutrientData.filter(d => d.nutrient === nutrientName);
             if (nutrientData.length === 0) return;
 
-            const unit = nutrientData.length > 0 ? nutrientData[0].unit : '';
+            const unit = nutrientData[0].unit;
             const t = translations[lang];
 
             const intakeData = nutrientData.filter(d => ['AI', 'AR', 'PRI', 'RI', 'Safe and adequate intake', 'RDA', 'DRV'].includes(d.type));
@@ -187,8 +185,15 @@
                 t.yAxisLabel(unit),
                 lang
             );
+            
+            // Ensure controls are visible and updated
+            const selectedNutrient = document.getElementById('nutrient-select').value;
+            if (selectedNutrient) {
+                setupControls();
+            }
         }
-
+        
+        // --- UPDATED CHART CREATION FUNCTION ---
         function createChart(canvasId, title, data, yAxisLabel, lang = 'tr') {
             const ctx = document.getElementById(canvasId);
             if (!ctx) return;
@@ -203,36 +208,58 @@
 
                 types.forEach(type => {
                     const typeData = sourceData.filter(d => d.type === type);
+                    if (typeData.length === 0) return;
+
                     const genders = [...new Set(typeData.map(d => d.gender))];
+                    const hasGenderSpecificData = genders.includes('Male') || genders.includes('Female');
 
-                    genders.forEach(gender => {
-                        const genderFilteredData = typeData.filter(d => d.gender === gender);
-                        
-                        if (genderFilteredData.length > 0) {
-                            let label = `${source} - ${type}`;
-                            if (gender !== 'Both') {
-                                label += ` (${gender === 'Male' ? t.genderMale : t.genderFemale})`;
-                            }
-                            
-                            let borderColor = sourceColors[source];
-                            if (genders.includes('Male') && genders.includes('Female')) {
-                                borderColor = gender === 'Male' ? 'rgba(54, 162, 235, 1)' : 'rgba(255, 99, 132, 1)';
-                            }
+                    if (hasGenderSpecificData) {
+                        const maleData = typeData.filter(d => d.gender === 'Male' || d.gender === 'Both');
+                        const femaleData = typeData.filter(d => d.gender === 'Female' || d.gender === 'Both');
 
+                        if (maleData.length > 0) {
                             datasets.push({
-                                label: label,
-                                data: createSteppedData(genderFilteredData),
-                                borderColor: borderColor,
-                                backgroundColor: borderColor.replace('1)', '0.2)'),
+                                label: `${source} - ${type} (${t.genderMale})`,
+                                data: createSteppedData(maleData),
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
                                 borderWidth: 2.5,
                                 pointRadius: 0,
-                                tension: 0,
                                 stepped: 'before',
                                 borderDash: sourceBorderDash[source],
-                                spanGaps: true, 
+                                spanGaps: true,
                             });
                         }
-                    });
+                        if (femaleData.length > 0) {
+                            datasets.push({
+                                label: `${source} - ${type} (${t.genderFemale})`,
+                                data: createSteppedData(femaleData),
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderWidth: 2.5,
+                                pointRadius: 0,
+                                stepped: 'before',
+                                borderDash: sourceBorderDash[source],
+                                spanGaps: true,
+                            });
+                        }
+                    } else {
+                        // Logic for data with only "Both" gender
+                        if (genders.includes('Both')) {
+                            const bothData = typeData.filter(d => d.gender === 'Both');
+                             datasets.push({
+                                label: `${source} - ${type}`,
+                                data: createSteppedData(bothData),
+                                borderColor: sourceColors[source],
+                                backgroundColor: sourceColors[source].replace('1)', '0.2)'),
+                                borderWidth: 2.5,
+                                pointRadius: 0,
+                                stepped: 'before',
+                                borderDash: sourceBorderDash[source],
+                                spanGaps: true,
+                            });
+                        }
+                    }
                 });
             });
 
@@ -260,9 +287,7 @@
                             callbacks: {
                                 label: function(context) {
                                     let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
+                                    if (label) { label += ': '; }
                                     if (context.parsed.y !== null) {
                                         label += context.parsed.y;
                                     }
@@ -287,6 +312,20 @@
                 }
             });
             charts.push(chart);
+            
+            // Re-apply checkbox visibility after chart creation
+            ['EFSA', 'FNB', 'TFC'].forEach(source => {
+                const checkbox = document.getElementById(`${source}-checkbox`);
+                if (checkbox) {
+                    const isVisible = checkbox.checked;
+                     chart.data.datasets.forEach(dataset => {
+                        if (dataset.label.startsWith(source)) {
+                            dataset.hidden = !isVisible;
+                        }
+                    });
+                }
+            });
+            chart.update();
         }
 
         // --- CONTROLS AND INITIALIZATION ---
@@ -325,6 +364,14 @@
             const selectElement = document.getElementById('nutrient-select');
             const nutrients = [...new Set(micronutrientData.map(d => d.nutrient))].sort();
 
+            // Add a placeholder option
+            const placeholder = document.createElement('option');
+            placeholder.value = "";
+            placeholder.textContent = "Bir mikrobesin seçin...";
+            placeholder.disabled = true;
+            placeholder.selected = true;
+            selectElement.appendChild(placeholder);
+
             nutrients.forEach(nutrient => {
                 const option = document.createElement('option');
                 option.value = nutrient;
@@ -333,13 +380,14 @@
             });
 
             selectElement.addEventListener('change', (e) => {
-                renderCharts(e.target.value, currentLang);
+                if (e.target.value) {
+                    renderCharts(e.target.value, currentLang);
+                }
             });
-
-            if (nutrients.length > 0) {
-                setupControls();
-                switchLanguage('tr'); // Set default language to Turkish on load
-            }
+            
+            // Initial setup call
+            setupControls();
+            switchLanguage(currentLang);
         });
 
     </script>
