@@ -64,6 +64,7 @@
                 title: "Mikrobesin Referans Değerleri",
                 subtitle: "EFSA, FNB ve TFC verilerinin 0-18 yaş aralığı için karşılaştırmalı analizi",
                 nutrientSelectLabel: "Analiz Edilecek Mikrobesini Seçin:",
+                selectPlaceholder: "Bir mikrobesin seçin...",
                 controlsTitle: "Grafik Kontrolleri",
                 intakeChartTitle: "Önerilen Alım Değerleri",
                 ulChartTitle: "Üst Limit Değerleri",
@@ -77,6 +78,7 @@
                 title: "Micronutrient Reference Values",
                 subtitle: "Comparative analysis of EFSA, FNB, and TFC data for the 0-18 age range",
                 nutrientSelectLabel: "Select Micronutrient to Analyze:",
+                selectPlaceholder: "Select a micronutrient...",
                 controlsTitle: "Chart Controls",
                 intakeChartTitle: "Recommended Intake Values",
                 ulChartTitle: "Upper Limit Values",
@@ -113,9 +115,15 @@
             document.getElementById('subtitle').textContent = t.subtitle;
             document.getElementById('nutrient-select-label').textContent = t.nutrientSelectLabel;
             document.getElementById('controls-title').textContent = t.controlsTitle;
+
+            const selectElement = document.getElementById('nutrient-select');
+            const placeholder = selectElement.querySelector('option[value=""]');
+            if (placeholder) {
+                placeholder.textContent = t.selectPlaceholder;
+            }
             
             // Re-render the charts with the new language
-            const selectedNutrient = document.getElementById('nutrient-select').value;
+            const selectedNutrient = selectElement.value;
             if (selectedNutrient) {
                 renderCharts(selectedNutrient, lang);
             }
@@ -129,7 +137,6 @@
                 points.push({ x: item.age_end, y: item.value });
                 const nextItemIndex = data.indexOf(item) + 1;
                 if (nextItemIndex < data.length) {
-                    // Create a gap if there is a discontinuity in age ranges
                     if (data[nextItemIndex].age_start > item.age_end) {
                         points.push({ x: item.age_end, y: null });
                     }
@@ -186,14 +193,12 @@
                 lang
             );
             
-            // Ensure controls are visible and updated
             const selectedNutrient = document.getElementById('nutrient-select').value;
             if (selectedNutrient) {
                 setupControls();
             }
         }
         
-        // --- UPDATED CHART CREATION FUNCTION ---
         function createChart(canvasId, title, data, yAxisLabel, lang = 'tr') {
             const ctx = document.getElementById(canvasId);
             if (!ctx) return;
@@ -244,7 +249,6 @@
                             });
                         }
                     } else {
-                        // Logic for data with only "Both" gender
                         if (genders.includes('Both')) {
                             const bothData = typeData.filter(d => d.gender === 'Both');
                              datasets.push({
@@ -313,7 +317,6 @@
             });
             charts.push(chart);
             
-            // Re-apply checkbox visibility after chart creation
             ['EFSA', 'FNB', 'TFC'].forEach(source => {
                 const checkbox = document.getElementById(`${source}-checkbox`);
                 if (checkbox) {
@@ -331,7 +334,7 @@
         // --- CONTROLS AND INITIALIZATION ---
         function setupControls() {
             const controlsDiv = document.getElementById('checkbox-controls');
-            controlsDiv.innerHTML = ''; // Clear previous controls
+            controlsDiv.innerHTML = ''; 
             const sources = ['EFSA', 'FNB', 'TFC'];
             
             sources.forEach(source => {
@@ -363,13 +366,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             const selectElement = document.getElementById('nutrient-select');
             const nutrients = [...new Set(micronutrientData.map(d => d.nutrient))].sort();
+            const t = translations[currentLang];
 
-            // Add a placeholder option
             const placeholder = document.createElement('option');
             placeholder.value = "";
-            placeholder.textContent = "Bir mikrobesin seçin...";
+            placeholder.textContent = t.selectPlaceholder;
             placeholder.disabled = true;
-            placeholder.selected = true;
             selectElement.appendChild(placeholder);
 
             nutrients.forEach(nutrient => {
@@ -385,7 +387,10 @@
                 }
             });
             
-            // Initial setup call
+            // Set Biotin as default and render its chart
+            selectElement.value = 'Biotin';
+            renderCharts('Biotin', currentLang);
+
             setupControls();
             switchLanguage(currentLang);
         });
