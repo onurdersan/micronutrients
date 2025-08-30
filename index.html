@@ -58,6 +58,15 @@
                  <div id="checkbox-controls" class="flex justify-center items-center gap-6 sm:gap-8 flex-wrap">
                     </div>
             </div>
+
+            <div id="sources-container" class="mt-8 p-6 bg-white rounded-xl shadow-md max-w-2xl mx-auto">
+                <h3 id="sources-title" class="text-lg font-semibold text-center mb-4 text-gray-800"></h3>
+                <div class="space-y-2 text-center text-sm">
+                    <p><strong>EFSA:</strong> <a id="efsa-link" href="https://www.efsa.europa.eu" target="_blank" class="text-blue-600 hover:underline"></a></p>
+                    <p><strong>FNB:</strong> <a id="fnb-link" href="https://www.nationalacademies.org/fnb/food-and-nutrition-board" target="_blank" class="text-blue-600 hover:underline"></a></p>
+                    <p><strong>TFC:</strong> <a id="tfc-link" href="https://www.tarimorman.gov.tr/Konular/Gida-Ve-Yem-Hizmetleri/Gida-Hizmetleri/Kodeks" target="_blank" class="text-blue-600 hover:underline"></a></p>
+                </div>
+            </div>
         </main>
 
         <footer id="footer" class="mt-12 pt-8 border-t border-gray-200 footer-text-custom text-gray-500">
@@ -97,6 +106,10 @@
                 nutrientSelectLabel: "Analiz Edilecek Mikrobesini Seçin:",
                 selectPlaceholder: "Bir mikrobesin seçin...",
                 controlsTitle: "Grafik Kontrolleri",
+                sourcesTitle: "Veri Kaynakları",
+                efsaFullName: "Avrupa Gıda Güvenliği Otoritesi",
+                fnbFullName: "ABD Gıda ve Beslenme Kurulu",
+                tfcFullName: "Türk Gıda Kodeksi",
                 intakeChartTitle: "Önerilen Alım Değerleri",
                 ulChartTitle: "Üst Limit Değerleri",
                 yAxisLabel: (unit) => `Değer (${unit})`,
@@ -129,6 +142,10 @@
                 nutrientSelectLabel: "Select Micronutrient to Analyze:",
                 selectPlaceholder: "Select a micronutrient...",
                 controlsTitle: "Chart Controls",
+                sourcesTitle: "Data Sources",
+                efsaFullName: "European Food Safety Authority",
+                fnbFullName: "U.S. Food and Nutrition Board",
+                tfcFullName: "Turkish Food Codex",
                 intakeChartTitle: "Recommended Intake Values",
                 ulChartTitle: "Upper Limit Values",
                 yAxisLabel: (unit) => `Value (${unit})`,
@@ -157,7 +174,7 @@
             }
         };
 
-        let currentLang = 'en'; // Default language
+        let currentLang = 'tr'; // Default language
 
         // --- GLOBAL VARIABLES ---
         let charts = [];
@@ -182,6 +199,11 @@
             document.getElementById('subtitle').textContent = t.subtitle;
             document.getElementById('nutrient-select-label').textContent = t.nutrientSelectLabel;
             document.getElementById('controls-title').textContent = t.controlsTitle;
+            
+            document.getElementById('sources-title').textContent = t.sourcesTitle;
+            document.getElementById('efsa-link').textContent = t.efsaFullName;
+            document.getElementById('fnb-link').textContent = t.fnbFullName;
+            document.getElementById('tfc-link').textContent = t.tfcFullName;
             
             document.getElementById('disclaimer-title').textContent = t.disclaimerTitle;
             document.getElementById('disclaimer-last-updated').textContent = t.disclaimerLastUpdated;
@@ -452,12 +474,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             const selectElement = document.getElementById('nutrient-select');
             const nutrients = [...new Set(micronutrientData.map(d => d.nutrient))].sort();
+            
+            // Set default language from translations object
             const t = translations[currentLang];
 
             const placeholder = document.createElement('option');
             placeholder.value = "";
             placeholder.textContent = t.selectPlaceholder;
             placeholder.disabled = true;
+            placeholder.selected = true; // Make it the default selected option
             selectElement.appendChild(placeholder);
 
             nutrients.forEach(nutrient => {
@@ -466,6 +491,11 @@
                 option.textContent = nutrient;
                 selectElement.appendChild(option);
             });
+            
+            // Set Biotin as default and render its chart
+            selectElement.value = 'Biotin';
+            renderCharts('Biotin', currentLang);
+
 
             selectElement.addEventListener('change', (e) => {
                 if (e.target.value) {
@@ -473,11 +503,8 @@
                 }
             });
             
-            // Set Biotin as default and render its chart
-            selectElement.value = 'Biotin';
-            renderCharts('Biotin', currentLang);
-
             setupControls();
+            // Apply initial language settings
             switchLanguage(currentLang);
         });
 
