@@ -36,6 +36,19 @@
             font-size: 0.875rem; /* 14px */
             line-height: 1.25rem; /* 20px */
         }
+        .terminology-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .terminology-table th, .terminology-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .terminology-table th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -157,7 +170,7 @@
                 disclaimerLastUpdated: "Son Güncelleme Tarihi: 30.08.2025",
                 disclaimerIntro: "Lütfen bu web sitesini kullanmadan önce aşağıdaki yasal uyarıları ve kullanım koşullarını dikkatlice okuyunuz. Bu siteyi kullanarak, bu koşulları kabul etmiş sayılırsınız.",
                 disclaimerGeneralTitle: "1. Genel Yasal Uyarı",
-                disclaimerGeneralContent: "Bu web sitesinde ('Site') sunulan içerikler, yalnızca genel bilgilendirme ve eğitim amacıyla hazırlanmıştır. Sitede yer alan bilgiler, Avrupa Gıda Güvenliği Otoritesi (EFSA) (https://www.efsa.europa.eu), ABD Gıda ve Beslenme Kurulu (FNB) (https://www.nationalacademies.org/fnb/food-and-nutrition-board) ve Türk Gıda Kodeksi (TFC) (https://www.tarimorman.gov.tr/Konular/Gida-Ve-Yem-Hizmetleri/Gida-Hizmetleri/Kodeks) gibi kamuya açık kaynaklardan derlenen mikrobesin referans değerlerini karşılaştırmalı olarak sunmaktadır.",
+                disclaimerGeneralContent: "Bu web sitesinde ('Site') sunulan içerikler, yalnızca genel bilgilirme ve eğitim amacıyla hazırlanmıştır. Sitede yer alan bilgiler, Avrupa Gıda Güvenliği Otoritesi (EFSA) (https://www.efsa.europa.eu), ABD Gıda ve Beslenme Kurulu (FNB) (https://www.nationalacademies.org/fnb/food-and-nutrition-board) ve Türk Gıda Kodeksi (TFC) (https://www.tarimorman.gov.tr/Konular/Gida-Ve-Yem-Hizmetleri/Gida-Hizmetleri/Kodeks) gibi kamuya açık kaynaklardan derlenen mikrobesin referans değerlerini karşılaştırmalı olarak sunmaktadır.",
                 disclaimerMedicalAdvice: "Bu Sitedeki hiçbir bilgi, profesyonel tıbbi tavsiye, teşhis veya tedavinin yerini alamaz. Beslenme düzeninizde veya yaşam tarzınızda herhangi bir değişiklik yapmadan, bir takviye kullanmaya başlamadan veya sağlıkla ilgili herhangi bir konuda karar vermeden önce mutlaka yetkili bir hekime, diyetisyene veya diğer nitelikli sağlık uzmanlarına danışmanız esastır. Sağlığınızla ilgili endişeleriniz için profesyonel tıbbi yardım almayı asla geciktirmeyin veya bu Sitede okuduğunuz bilgiler nedeniyle göz ardı etmeyin.",
                 disclaimerAccuracyTitle: "2. Veri Doğruluğu ve Sorumluluk Reddi",
                 disclaimerAccuracyContent: "Sitede sunulan verilerin doğruluğu, eksiksizliği ve güncelliği konusunda azami özen gösterilmekle birlikte, herhangi bir garanti verilmemektedir. Veriler, orijinal kaynak otoriteler tarafından güncellenebilir, değiştirilebilir veya düzeltilebilir. Bu nedenle, Sitedeki bilgilerin kullanımından veya bu bilgilere dayanarak alınan kararlardan kaynaklanabilecek doğrudan veya dolaylı hiçbir zarar, kayıp veya hasardan Site sahibi sorumlu tutulamaz. Sitenin kullanım riski tamamen kullanıcıya aittir.",
@@ -181,7 +194,9 @@
                     aiTitle: "Yeterli Alım (AI)",
                     aiContent: "Bir EAR (ve dolayısıyla RDA/PRI) geliştirmek için bilimsel kanıtların yetersiz olduğu durumlarda belirlenen bir değerdir. AI, sağlıklı bir insan grubunun gözlemlenen veya deneysel olarak belirlenen besin alımı tahminlerine dayanır. Bu, bir AI'nin bir RDA/PRI'ye göre daha düşük düzeyde bilimsel kesinliğe sahip olduğunu gösteren önemli bir ayrımdır.",
                     ulTitle: "Tolerere Edilebilir Üst Alım Seviyesi (UL)",
-                    ulContent: "Genel popülasyondaki hemen hemen tüm bireyler için olumsuz sağlık etkileri riski oluşturması muhtemel olmayan en yüksek günlük besin alım düzeyidir. Bu, besin takviyeleri ve zenginleştirilmiş gıdaların tüketimi açısından kritik bir güvenlik ölçütüdür."
+                    ulContent: "Genel popülasyondaki hemen hemen tüm bireyler için olumsuz sağlık etkileri riski oluşturması muhtemel olmayan en yüksek günlük besin alım düzeyidir. Bu, besin takviyeleri ve zenginleştirilmiş gıdaların tüketimi açısından kritik bir güvenlik ölçütüdür.",
+                    tableTitle: "Kurumlar Arası Terminoloji Eşleştirme Tablosu",
+                    abbreviationsTitle: "Kısaltmalar"
                 }
             },
             en: {
@@ -236,12 +251,14 @@
                     aiTitle: "Adequate Intake (AI)",
                     aiContent: "It is a value set when scientific evidence is insufficient to develop an EAR (and therefore an RDA/PRI). AI is based on observed or experimentally determined nutrient intake estimates of a group of healthy people. This is an important distinction that indicates that an AI has a lower level of scientific certainty than an RDA/PRI.",
                     ulTitle: "Tolerable Upper Intake Level (UL)",
-                    ulContent: "It is the highest daily nutrient intake level that is unlikely to pose a risk of adverse health effects for almost all individuals in the general population. This is a critical safety criterion for the consumption of dietary supplements and fortified foods."
+                    ulContent: "It is the highest daily nutrient intake level that is unlikely to pose a risk of adverse health effects for almost all individuals in the general population. This is a critical safety criterion for the consumption of dietary supplements and fortified foods.",
+                    tableTitle: "Inter-Agency Terminology Matching Table",
+                    abbreviationsTitle: "Abbreviations"
                 }
             }
         };
 
-        let currentLang = 'tr'; // Default language
+        let currentLang = 'en'; // Default language
 
         // --- GLOBAL VARIABLES ---
         let charts = [];
@@ -319,26 +336,82 @@
         // --- INFO PANEL ---
         function updateInfoPanelContent(lang) {
             const t = translations[lang].infoPanel;
+            const terminologyTableHTML = lang === 'tr' ? `
+                <table class="terminology-table">
+                    <thead>
+                        <tr>
+                            <th>Kavram</th>
+                            <th>FNB (ABD/Kanada)</th>
+                            <th>EFSA (AB)</th>
+                            <th>NHMRC (AUS/NZ)</th>
+                            <th>UK SACN</th>
+                            <th>WHO</th>
+                            <th>TGK (TR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Ortalama Gereksinim</td><td>EAR</td><td>AR</td><td>EAR</td><td>-</td><td>EAR</td><td></td></tr>
+                        <tr><td>Bireyler için Önerilen Alım</td><td>RDA</td><td>PRI</td><td>RDI</td><td>RNI</td><td>RNI</td><td></td></tr>
+                        <tr><td>Yeterli Alım</td><td>AI</td><td>AI</td><td>AI</td><td>-</td><td>AI</td><td></td></tr>
+                        <tr><td>Güvenli Üst Sınır</td><td>UL</td><td>UL</td><td>UL</td><td>-</td><td>UL</td><td></td></tr>
+                        <tr><td>Etiket Değeri</td><td>DV</td><td>RI</td><td></td><td></td><td></td><td>BRD</td></tr>
+                    </tbody>
+                </table>
+            ` : `
+                <table class="terminology-table">
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>FNB (US/Canada)</th>
+                            <th>EFSA (EU)</th>
+                            <th>NHMRC (AUS/NZ)</th>
+                            <th>UK SACN</th>
+                            <th>WHO</th>
+                            <th>TFC (TR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Average Requirement</td><td>EAR</td><td>AR</td><td>EAR</td><td>-</td><td>EAR</td><td></td></tr>
+                        <tr><td>Recommended Intake for Individuals</td><td>RDA</td><td>PRI</td><td>RDI</td><td>RNI</td><td>RNI</td><td></td></tr>
+                        <tr><td>Adequate Intake</td><td>AI</td><td>AI</td><td>AI</td><td>-</td><td>AI</td><td></td></tr>
+                        <tr><td>Safe Upper Limit</td><td>UL</td><td>UL</td><td>UL</td><td>-</td><td>UL</td><td></td></tr>
+                        <tr><td>Label Value</td><td>DV</td><td>RI</td><td></td><td></td><td></td><td>BRD</td></tr>
+                    </tbody>
+                </table>
+            `;
+
+            const abbreviationsListHTML = `
+                <ul class="list-disc list-inside mt-2">
+                    <li><strong>AI:</strong> Adequate Intake</li>
+                    <li><strong>BRD:</strong> Beslenme Referans Değeri (Dietary Reference Value)</li>
+                    <li><strong>DV:</strong> Daily Value</li>
+                    <li><strong>EAR:</strong> Estimated Average Requirement</li>
+                    <li><strong>EFSA:</strong> European Food Safety Authority</li>
+                    <li><strong>FNB:</strong> Food and Nutrition Board</li>
+                    <li><strong>NHMRC:</strong> National Health and Medical Research Council</li>
+                    <li><strong>PRI:</strong> Population Reference Intake</li>
+                    <li><strong>RDA:</strong> Recommended Dietary Allowance</li>
+                    <li><strong>RI:</strong> Reference Intake</li>
+                    <li><strong>RNI:</strong> Reference Nutrient Intakes</li>
+                    <li><strong>TFC:</strong> Turkish Food Codex</li>
+                    <li><strong>UK SACN:</strong> United Kingdom Scientific Advisory Committee on Nutrition</li>
+                    <li><strong>UL:</strong> Tolerable Upper Intake Level</li>
+                    <li><strong>WHO:</strong> World Health Organization</li>
+                </ul>
+            `;
+
             const content = `
                 <h2 class="text-2xl font-bold mb-4">${t.title}</h2>
                 <div class="space-y-4">
-                    <div>
-                        <h3 class="font-semibold">${t.earTitle}</h3>
-                        <p>${t.earContent}</p>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold">${t.rdaTitle}</h3>
-                        <p>${t.rdaContent}</p>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold">${t.aiTitle}</h3>
-                        <p>${t.aiContent}</p>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold">${t.ulTitle}</h3>
-                        <p>${t.ulContent}</p>
-                    </div>
+                    <div><h3 class="font-semibold">${t.earTitle}</h3><p>${t.earContent}</p></div>
+                    <div><h3 class="font-semibold">${t.rdaTitle}</h3><p>${t.rdaContent}</p></div>
+                    <div><h3 class="font-semibold">${t.aiTitle}</h3><p>${t.aiContent}</p></div>
+                    <div><h3 class="font-semibold">${t.ulTitle}</h3><p>${t.ulContent}</p></div>
                 </div>
+                <h2 class="text-2xl font-bold mt-6 mb-4">${t.tableTitle}</h2>
+                ${terminologyTableHTML}
+                <h2 class="text-2xl font-bold mt-6 mb-4">${t.abbreviationsTitle}</h2>
+                ${abbreviationsListHTML}
             `;
             document.getElementById('info-content').innerHTML = content;
         }
