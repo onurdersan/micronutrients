@@ -59,12 +59,26 @@
                     </div>
             </div>
 
-            <div id="sources-container" class="mt-8 p-6 bg-white rounded-xl shadow-md max-w-2xl mx-auto">
-                <h3 id="sources-title" class="text-lg font-semibold text-center mb-4 text-gray-800"></h3>
-                <div class="space-y-2 text-center text-sm">
-                    <p><strong>EFSA:</strong> <a id="efsa-link" href="https://www.efsa.europa.eu" target="_blank" class="text-blue-600 hover:underline"></a></p>
-                    <p><strong>FNB:</strong> <a id="fnb-link" href="https://www.nationalacademies.org/fnb/food-and-nutrition-board" target="_blank" class="text-blue-600 hover:underline"></a></p>
-                    <p><strong>TFC:</strong> <a id="tfc-link" href="https://www.tarimorman.gov.tr/Konular/Gida-Ve-Yem-Hizmetleri/Gida-Hizmetleri/Kodeks" target="_blank" class="text-blue-600 hover:underline"></a></p>
+            <div class="mt-8 max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div id="sources-container" class="p-6 bg-white rounded-xl shadow-md">
+                    <h3 id="sources-title" class="text-lg font-semibold mb-4 text-gray-800"></h3>
+                    <div class="space-y-2 text-sm text-left">
+                        <p><strong>EFSA:</strong> <a id="efsa-link" href="https://www.efsa.europa.eu" target="_blank" class="text-blue-600 hover:underline"></a></p>
+                        <p><strong>FNB:</strong> <a id="fnb-link" href="https://www.nationalacademies.org/fnb/food-and-nutrition-board" target="_blank" class="text-blue-600 hover:underline"></a></p>
+                        <p><strong>TFC:</strong> <a id="tfc-link" href="https://www.tarimorman.gov.tr/Konular/Gida-Ve-Yem-Hizmetleri/Gida-Hizmetleri/Kodeks" target="_blank" class="text-blue-600 hover:underline"></a></p>
+                    </div>
+                </div>
+
+                <div id="abbreviations-container" class="p-6 bg-white rounded-xl shadow-md">
+                    <h3 id="abbreviations-title" class="text-lg font-semibold mb-4 text-gray-800"></h3>
+                    <div class="space-y-2 text-sm text-left">
+                         <p><strong>AI:</strong> <span id="abbr-ai"></span></p>
+                         <p><strong>PRI:</strong> <span id="abbr-pri"></span></p>
+                         <p><strong>UL:</strong> <span id="abbr-ul"></span></p>
+                         <p><strong>RDA:</strong> <span id="abbr-rda"></span></p>
+                         <p><strong>DRV:</strong> <span id="abbr-drv"></span></p>
+                         <p><strong>DML:</strong> <span id="abbr-dml"></span></p>
+                    </div>
                 </div>
             </div>
         </main>
@@ -107,9 +121,16 @@
                 selectPlaceholder: "Bir mikrobesin seçin...",
                 controlsTitle: "Grafik Kontrolleri",
                 sourcesTitle: "Veri Kaynakları",
+                abbreviationsTitle: "Kısaltmalar",
                 efsaFullName: "Avrupa Gıda Güvenliği Otoritesi",
                 fnbFullName: "ABD Gıda ve Beslenme Kurulu",
                 tfcFullName: "Türk Gıda Kodeksi",
+                abbrAI: "Yeterli Alım",
+                abbrPRI: "Popülasyon Referans Alımı",
+                abbrUL: "Tolerere Edilebilir Üst Alım Düzeyi",
+                abbrRDA: "Önerilen Günlük Alım Miktarı",
+                abbrDRV: "Beslenme Referans Değeri",
+                abbrDML: "Günlük Maksimum Miktar",
                 intakeChartTitle: "Önerilen Alım Değerleri",
                 ulChartTitle: "Üst Limit Değerleri",
                 yAxisLabel: (unit) => `Değer (${unit})`,
@@ -143,9 +164,16 @@
                 selectPlaceholder: "Select a micronutrient...",
                 controlsTitle: "Chart Controls",
                 sourcesTitle: "Data Sources",
+                abbreviationsTitle: "Abbreviations",
                 efsaFullName: "European Food Safety Authority",
                 fnbFullName: "U.S. Food and Nutrition Board",
                 tfcFullName: "Turkish Food Codex",
+                abbrAI: "Adequate Intake",
+                abbrPRI: "Population Reference Intake",
+                abbrUL: "Tolerable Upper Intake Level",
+                abbrRDA: "Recommended Dietary Allowance",
+                abbrDRV: "Dietary Reference Value",
+                abbrDML: "Daily Maximum Level",
                 intakeChartTitle: "Recommended Intake Values",
                 ulChartTitle: "Upper Limit Values",
                 yAxisLabel: (unit) => `Value (${unit})`,
@@ -204,6 +232,14 @@
             document.getElementById('efsa-link').textContent = t.efsaFullName;
             document.getElementById('fnb-link').textContent = t.fnbFullName;
             document.getElementById('tfc-link').textContent = t.tfcFullName;
+
+            document.getElementById('abbreviations-title').textContent = t.abbreviationsTitle;
+            document.getElementById('abbr-ai').textContent = t.abbrAI;
+            document.getElementById('abbr-pri').textContent = t.abbrPRI;
+            document.getElementById('abbr-ul').textContent = t.abbrUL;
+            document.getElementById('abbr-rda').textContent = t.abbrRDA;
+            document.getElementById('abbr-drv').textContent = t.abbrDRV;
+            document.getElementById('abbr-dml').textContent = t.abbrDML;
             
             document.getElementById('disclaimer-title').textContent = t.disclaimerTitle;
             document.getElementById('disclaimer-last-updated').textContent = t.disclaimerLastUpdated;
